@@ -1,6 +1,6 @@
 <template>
 
-<div class="collapse" v-bind:id="'input-content-'+todo.id">
+<div class="collapse bg-secondary" v-bind:id="'input-content-'+todo.id">
     <div>
         <div class="d-flex justify-content-center">
             <div class="d-flex flex-column">
@@ -34,7 +34,7 @@
                                 <button class="btn btn-secondary" @click="updateTodo" data-toggle="collapse" v-bind:data-target="'#input-content-'+todo.id">저장</button>
                             </div>
                             <div class="col">
-                                <button class="btn btn-warning" data-toggle="collapse" v-bind:data-target="'#input-content-'+todo.id" >취소</button>
+                                <button class="btn btn-warning" data-toggle="collapse" v-bind:data-target="'#input-content-'+todo.id" @click="cancelUpdate">취소</button>
                             </div>
                     </div>
                 </div>
@@ -92,6 +92,14 @@ export default {
                 
             })
         },
+        cancelUpdate: function(){
+            this.id=this.todo.id;
+            this.subject=this.todo.subject;
+            this.content=this.todo.content;
+            this.priority=this.todo.priority;
+            this.expiration=this.todo.expiration;
+            this.done=this.todo.done
+        }
     }
 }
 </script>

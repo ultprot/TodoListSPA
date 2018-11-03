@@ -68,9 +68,7 @@
         />
     </ul>
 
-    <div class="d-flex p-1 justify-content-center">
-        <img src="../assets/logo.png" class="img-thumbnail">
-    </div>
+    
     <nav class="navbar bg-dark navbar-dark fixed-bottom"></nav>
 </body>
 
@@ -85,73 +83,7 @@ export default {
     },
     data(){
         return {
-            todos:
-            [
-                {
-                    id:1,
-                    subject:'첫번째 항목입니다. 제목이 매우 길어졌을때 어떻게 되는지 매우 궁금하여 시험해 보려고 합니다.',
-                    content:'첫번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                    priority:5,
-                    expiration:'2018-11-30T11:15',
-                    done:false
-                },
-                {
-                    id:2,
-                    subject:'두번째 항목입니다.',
-                    content:'두번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                    priority:5,
-                    expiration:'2018-11-30T11:15',
-                    done:false
-                },
-                {
-                    id:3,
-                    subject:'세번째 항목입니다.',
-                    content:'세번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                    priority:5,
-                    expiration:'2018-11-30T11:15',
-                    done:false
-                },
-                {
-                    id:4,
-                    subject:'네번째 항목입니다.',
-                    content:'네번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                    priority:5,
-                    expiration:'2018-11-30T11:15',
-                    done:false
-                },
-                {
-                    id:5,
-                    subject:'다섯번째 항목입니다.',
-                    content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                    priority:5,
-                    expiration:'2018-11-30T11:15',
-                    done:false
-                },
-                {
-                    id:6,
-                    subject:'다섯번째 항목입니다.',
-                    content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                    priority:5,
-                    expiration:'2018-11-30T11:15',
-                    done:false
-                },
-                {
-                    id:8,
-                    subject:'다섯번째 항목입니다.',
-                    content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                    priority:5,
-                    expiration:'2018-11-30T11:15',
-                    done:false
-                },
-                {
-                    id:9,
-                    subject:'다섯번째 항목입니다.',
-                    content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                    priority:5,
-                    expiration:'2018-11-30T11:15',
-                    done:false
-                }
-            ],
+            todos:'',
             newTodo:{
                 subject:null,
                 content:null,
@@ -159,6 +91,16 @@ export default {
                 expiration:null
             }
         }  
+    },
+    created(){
+        var point=this;
+        const baseURI='/list';
+        this.$axios.get(baseURI)
+        .then(function(response){
+            point.todos=response.data;
+        }).catch(function(error){
+            alert(error)
+        })
     },
     methods:{
         postNewTodo: function(){
@@ -183,7 +125,7 @@ export default {
                 point.newTodo.priority=null;
                 point.newTodo.expiration=null;
             }).catch(function(error){
-                alert(error);
+                
             })
         },
         deleteTodo: function(currentID){
