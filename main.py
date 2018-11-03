@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask
+from flask import request
+from flask import jsonify
+from flask import json
 import os
 class VueFlask(Flask):
 	jinja_options=Flask.jinja_options.copy()
@@ -31,32 +34,62 @@ def getList():
 def postItem():
 	if request.method=='POST':
 		print("item posted")
-	return app.send_static_file('index.html')
+		print(request)
+		print(request.json)
+		json_data={
+			'id':global_id,
+			'subject':request.json['subject'],
+			'content':request.json['content'],
+			'priority':request.json['priority'],
+			'expiration':request.json['expiration']
+		}
+		print(json_data)
+		response=app.response_class(
+			response=json.dumps(json_data),
+			status=200,
+			mimetype='application/json; charset=utf-8'
+		)
+		global_id+=1
+		print(response)
+		return response
 
 @app.route('/item/<int:id>',methods=['PUT'])
-def updateItem():
-	if request.methods=='POST':
-		print("item "+id+" updated")
+def updateItem(id):
+	if request.method=='PUT':
+		print("item "+str(id)+" updated")
+		print(request)
+		print(request.json)
 	return app.send_static_file('index.html')
 
 @app.route('/item/<int:id>',methods=['DELETE'])
-def deleteItem():
-	if request.methods=='DELETE':
-		print("item "+id+" deleted")
-	return app.send_static_file('index.html')
+def deleteItem(id):
+	if request.method=='DELETE':
+		print("item "+str(id)+" deleted")
+		print(request)
+		json_data={
+			'id':id,
+		}
+		response=app.response_class(
+			response=json.dumps(json_data),
+			status=200,
+			mimetype='application/json; charset=utf-8'
+		)
+	return response
 
 @app.route('/item/<int:id>/priority',methods=['PUT'])
-def updatePriority():
-	if request.methods=='PUT':
-		print("item "+id+" priority updated")
+def updatePriority(id):
+	if request.method=='PUT':
+		print("item "+str(id)+" priority updated")
+		print(request)
 	return app.send_static_file('index.html')
 
 @app.route('/item/<int:id>/done',methods=['PUT'])
-def updateDone():
-	if request.methods=='PUT':
-		print("item"+id+" done updated")
+def updateDone(id):
+	if request.method=='PUT':
+		print("item"+str(id)+" done updated")
+		print(request)
 	return app.send_static_file('index.html')
 
 
 if __name__=='__main__':
-    app.run(host='0.0.0.0',port=26530)
+	app.run(host='0.0.0.0',port=26530)

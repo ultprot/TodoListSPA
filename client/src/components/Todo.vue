@@ -26,11 +26,9 @@
                                 +
                             </button>
                             <div class="dropdown-menu ">
-                                <div class="dropdown-header">우선순위</div>
-                                <a href="#" class="dropdown-item">올림</a>
-                                <a href="#" class="dropdown-item">내림</a>
                                 <div class="dropdown-divider"></div>
-                                <a href="#" class="dropdown-item"><div class="text-warning">삭제</div></a>
+                                <div class="dropdown-item" data-toggle="collapse" v-bind:data-target="'#input-content-'+todo.id">수정</div>
+                                <div class="dropdown-item" @click="deleteTodo"><div class="text-warning" @click="deleteTodo">삭제</div></div>
                             </div>
                         </div>
                     </div>
@@ -47,12 +45,18 @@
         <div>우선순위 {{todo.priority}}</div>
         <div>기한 {{todo.expiration}}</div>
     </div>
+    <Input @todoChanged="updateTodo" :todo="todo"/>
 </li>
 </template>
 
 <script>
+import Input from './Input.vue'
+
 export default {
     name: 'Todo',
+    components:{
+        Input
+    },
     props:{
         todo:{
             type: Object,
@@ -62,6 +66,28 @@ export default {
     methods:{
         toggleDonity: function(){
             this.todo.done=this.todo.done^1
+            const baseURI='/item/'+String(this.todo.id)+'/done';
+            this.$axios.put(baseURI,{
+                done:this.todo.done
+            }).then(function(response){
+
+            }).catch(function(error){
+
+            })
+        },
+        deleteTodo: function(){
+            var currentID=this.todo.id;
+            var point=this;
+            const baseURI='/item/'+String(currentID);
+            this.$axios.delete(baseURI)
+            .then(function(response){
+                point.$emit('todoDeleted',currentID);
+            }).catch(function(error){
+                
+            })
+        },
+        updateTodo: function(changedTodo){
+            this.todo=changedTodo;
         }
     }
 }

@@ -24,31 +24,33 @@
                         <form action="#">
                             <div class="form-group">
                                     <label for="subject">제목</label>
-                                    <input type="text" class="form-control" id="subject">
+                                    <input type="text" class="form-control" v-model="newTodo.subject">
                             </div>
                             <div class="form-group">
                                 <label for="content">내용</label>
-                                <textarea class="form-control" rows="5" id="content"></textarea>
-                            </div>
-                            <select name="priority" class="custom-select-sm">
-                                <option selected>우선순위</option>
-                                <option value="1">1</option>                           
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                            <div class="d-flex p-2"></div>
-                            <div class="form-group">
-                                <label for="expiration">기한</label>
-                                <input class="form-control" type="datetime-local"/>
+                                <textarea class="form-control" rows="5" id="content" v-model="newTodo.content"></textarea>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-secondary">등록</button>
+                                <div class="btn btn-secondary" data-toggle="collapse" data-target="#newpriority">우선순위 설정</div>
+                                <select class="form-control collapse" id="newpriority" v-model="newTodo.priority">
+                                    <option selected>우선순위</option>
+                                    <option value="1">1</option>                           
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="btn btn-secondary" data-toggle="collapse" data-target="#newexpiration">기한 설정</div>
+                                <div id="newexpiration" class="collapse">
+                                    <input class="form-control" type="datetime-local" v-model="newTodo.expiration"/>
+                                </div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
+                        <button class="btn btn-secondary" data-toggle="modal" data-target="#input-content" @click="postNewTodo">등록</button>
                         <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -62,11 +64,12 @@
             v-for="todo in todos"
             :key="todo.id" 
             :todo="todo"
+            @todoDeleted="deleteTodo"
         />
     </ul>
 
     <div class="d-flex p-1 justify-content-center">
-        <img src="../assets/logo.png">
+        <img src="../assets/logo.png" class="img-thumbnail">
     </div>
     <nav class="navbar bg-dark navbar-dark fixed-bottom"></nav>
 </body>
@@ -81,131 +84,119 @@ export default {
         Todo
     },
     data(){
-            return {
-                todos:
-                [
-                    {
-                        id:1,
-                        subject:'첫번째 항목입니다. 제목이 매우 길어졌을때 어떻게 되는지 매우 궁금하여 시험해 보려고 합니다.',
-                        content:'첫번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:2,
-                        subject:'두번째 항목입니다.',
-                        content:'두번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:3,
-                        subject:'세번째 항목입니다.',
-                        content:'세번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:4,
-                        subject:'네번째 항목입니다.',
-                        content:'네번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:5,
-                        subject:'다섯번째 항목입니다.',
-                        content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:5,
-                        subject:'다섯번째 항목입니다.',
-                        content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:5,
-                        subject:'다섯번째 항목입니다.',
-                        content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:5,
-                        subject:'다섯번째 항목입니다.',
-                        content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:5,
-                        subject:'다섯번째 항목입니다.',
-                        content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:5,
-                        subject:'다섯번째 항목입니다.',
-                        content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:5,
-                        subject:'다섯번째 항목입니다.',
-                        content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:5,
-                        subject:'다섯번째 항목입니다.',
-                        content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:5,
-                        subject:'다섯번째 항목입니다.',
-                        content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:5,
-                        subject:'다섯번째 항목입니다.',
-                        content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    },
-                    {
-                        id:5,
-                        subject:'다섯번째 항목입니다.',
-                        content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
-                        priority:5,
-                        expiration:'2018-11-30',
-                        done:false
-                    }
-                ]
-            }  
+        return {
+            todos:
+            [
+                {
+                    id:1,
+                    subject:'첫번째 항목입니다. 제목이 매우 길어졌을때 어떻게 되는지 매우 궁금하여 시험해 보려고 합니다.',
+                    content:'첫번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
+                    priority:5,
+                    expiration:'2018-11-30T11:15',
+                    done:false
+                },
+                {
+                    id:2,
+                    subject:'두번째 항목입니다.',
+                    content:'두번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
+                    priority:5,
+                    expiration:'2018-11-30T11:15',
+                    done:false
+                },
+                {
+                    id:3,
+                    subject:'세번째 항목입니다.',
+                    content:'세번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
+                    priority:5,
+                    expiration:'2018-11-30T11:15',
+                    done:false
+                },
+                {
+                    id:4,
+                    subject:'네번째 항목입니다.',
+                    content:'네번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
+                    priority:5,
+                    expiration:'2018-11-30T11:15',
+                    done:false
+                },
+                {
+                    id:5,
+                    subject:'다섯번째 항목입니다.',
+                    content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
+                    priority:5,
+                    expiration:'2018-11-30T11:15',
+                    done:false
+                },
+                {
+                    id:6,
+                    subject:'다섯번째 항목입니다.',
+                    content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
+                    priority:5,
+                    expiration:'2018-11-30T11:15',
+                    done:false
+                },
+                {
+                    id:8,
+                    subject:'다섯번째 항목입니다.',
+                    content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
+                    priority:5,
+                    expiration:'2018-11-30T11:15',
+                    done:false
+                },
+                {
+                    id:9,
+                    subject:'다섯번째 항목입니다.',
+                    content:'다섯번째 항목의 내용입니다. 잘 나왔으면 좋겠습니다.',
+                    priority:5,
+                    expiration:'2018-11-30T11:15',
+                    done:false
+                }
+            ],
+            newTodo:{
+                subject:null,
+                content:null,
+                priority:null,
+                expiration:null
+            }
+        }  
+    },
+    methods:{
+        postNewTodo: function(){
+            const baseURI='/item';
+            var point=this;
+            this.$axios.post(baseURI,{
+                subject:this.newTodo.subject,
+                content:this.newTodo.content,
+                priority:this.newTodo.priority,
+                expiration:this.newTodo.expiration
+            }).then(function(response){
+                var tempTodo=new Object();
+                tempTodo.id=response.data.id;
+                tempTodo.subject=response.data.subject;
+                tempTodo.content=response.data.content;
+                tempTodo.priority=response.data.priority;
+                tempTodo.expiration=response.data.expiration;
+                tempTodo.done=false;
+                point.todos.unshift(tempTodo);
+                point.newTodo.subject=null;
+                point.newTodo.content=null;
+                point.newTodo.priority=null;
+                point.newTodo.expiration=null;
+            }).catch(function(error){
+                alert(error);
+            })
+        },
+        deleteTodo: function(currentID){
+            var index
+            for(index=0;index<this.todos.length;index++)
+            {
+                if(this.todos[index].id==currentID)
+                {
+                    break;
+                }
+            }
+            this.todos.splice(index,1);
+        }
     }
 }
 </script>
