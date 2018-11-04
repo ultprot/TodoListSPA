@@ -59,7 +59,7 @@
         <nav class="navbar bg-dark navbar-dark fixed-bottom"></nav>
     </div>
     
-    <ul class="list-group">
+    <ul class="list-group" v-if="Array.isArray(todos)">
         <Todo
             v-for="todo in todos"
             :key="todo.id" 
@@ -83,7 +83,7 @@ export default {
     },
     data(){
         return {
-            todos:'',
+            todos:[],
             newTodo:{
                 subject:null,
                 content:null,
@@ -97,10 +97,20 @@ export default {
         const baseURI='/list';
         this.$axios.get(baseURI)
         .then(function(response){
-            point.todos=response.data;
+            if(Array.isArray(response.data))
+            {
+                point.todos=response.data;
+            }
         }).catch(function(error){
             alert(error)
         })
+    },
+    watch: {
+    // 질문이 변경될 때 마다 이 기능이 실행됩니다.
+        currentTime: function (newTime) {
+            this.answer = '입력을 기다리는 중...'
+            this.getAnswer()
+        }
     },
     methods:{
         postNewTodo: function(){

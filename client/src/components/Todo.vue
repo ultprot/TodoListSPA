@@ -42,8 +42,8 @@
     <div class="collapse" v-bind:id="'content-'+todo.id">
         <div class="d-flex p-1"></div>
         <div>{{todo.content}}</div>
-        <div>우선순위 {{todo.priority}}</div>
-        <div>기한 {{todo.expiration}}</div>
+        <div v-if="todo.priority!=null">우선순위 {{todo.priority}}</div>
+        <div v-if="todo.expiration!=null">기한 {{todo.expiration}}</div>
     </div>
     <Input @todoChanged="updateTodo" :todo="todo"/>
 </li>

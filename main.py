@@ -145,7 +145,10 @@ def index():
 @app.route('/list')
 def getList():
 	data=dataList()
-	data.reverse()
+	if isinstance(data,list):
+		data.reverse()
+	else:
+		data=[]
 	response=app.response_class(
 		response=json.dumps(data),
 		status=200,
