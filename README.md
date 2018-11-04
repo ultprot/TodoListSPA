@@ -26,6 +26,6 @@ python3 main.py
 ```
 ##
 DB setting
-create user 'todoer'at mariadb
-execute mysql.init
-set DB's password in mysql.json
+create user 'todoer'at mariadb  
+execute mysql.init  
+set DB's password in mysql.json  
