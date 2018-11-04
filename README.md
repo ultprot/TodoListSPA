@@ -8,9 +8,6 @@
 # in vue directory
 cd client
 
-# install dependencies
-npm install
-
 # build for production with minification
 npm run build
 
@@ -19,8 +16,10 @@ cd ..
 
 #python envinronment setting
 virtualenv venv
+source venv/bin/activate
 
-source venv/bin/active
+#install packages
+pip3 install -r requirements.txt
 
 #runserver
 python3 main.py
