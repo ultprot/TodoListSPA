@@ -23,3 +23,9 @@ pip3 install -r requirements.txt
 
 #runserver
 python3 main.py
+```
+##
+DB setting
+create user 'todoer'at mariadb
+execute mysql.init
+set DB's password in mysql.json
